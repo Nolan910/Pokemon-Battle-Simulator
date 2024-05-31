@@ -11,6 +11,8 @@ function PokeTeam  () {
     const [name, setName] = useState("Your Leader")
     let [health, setHealth] = useState(0)
     const [maxHealth, setMaxHealth] = useState(0)
+    const [firstType, setFirstType] = useState(null)
+    const [secondType, setSecondType] = useState(null)
     const [attack, setAttack] = useState(0)
     const [defense, setDefense] = useState(0)
     const [specialAttack, setSpecialAttack] = useState(0)
@@ -32,6 +34,8 @@ function PokeTeam  () {
     const [bossName, setBossName] = useState("Boss")
     let [bossHealth, setBossHealth] = useState(0)
     const [bossMaxHealth, setBossMaxHealth] = useState(0)
+    const [BossFirstType, setBossFirstType] = useState(null)
+    const [BossSecondType, setBossSecondType] = useState(null)
     const [bossAttack, setBossAttack] = useState(0)
     const [bossDefense, setBossDefense] = useState(0)
     const [bossSpecialAttack, setBossSpecialAttack] = useState(0)
@@ -46,25 +50,25 @@ function PokeTeam  () {
 
         const fetchPokemons = async () => {
         try {
-            const response = await axios.get('http://localhost:3001/random');
-            // console.log(response.data)
+            const response = await axios.get('https://pokemon-battle-simulator-data.vercel.app/random');
             const listePok = [...pokemon, response.data]
             setPokemon(listePok);
             // console.log("poketaille",pokemon.length)
-            setName (listePok[pokePlace]["Name"])
+            setName (listePok[pokePlace][" Name"])
             setHealth (listePok[pokePlace]["HP"])
             setMaxHealth (listePok[pokePlace]["HP"])
+            setFirstType (listePok[pokePlace]["Types"][0])
+            setSecondType (listePok[pokePlace]["Types"][1])
             setAttack (listePok[pokePlace]["Attack"])
             setDefense (listePok[pokePlace]["Defense"])
             setSpecialAttack (listePok[pokePlace]["Special Attack"])
             setSpecialDefense (listePok[pokePlace]["Special Defense"])
-            setSpeed (listePok[pokePlace]["Speed"])         
+            setSpeed (listePok[pokePlace]["Speed"])
             const listeMoves = listePok[pokePlace]["Moves"]
             setFirstMove (listeMoves[0])
             setSecundMove (listeMoves[Math.floor(Math.random()* listeMoves.length)])
             setThirdMove (listeMoves[Math.floor(Math.random()* listeMoves.length)])
             setFourthMove (listeMoves[Math.floor(Math.random()* listeMoves.length)])
-
 
             setGetPokemon(false)
             
@@ -76,12 +80,14 @@ function PokeTeam  () {
 
         const fetchBoss = async () => {
         try{
-            const response2 = await axios.get('http://localhost:3001/random');
+            const response2 = await axios.get('https://pokemon-battle-simulator-data.vercel.app/random');
             const Bigboss = [...boss, response2.data]
             setBoss(Bigboss)
-            setBossName (Bigboss[0]["Name"])
+            setBossName (Bigboss[0][" Name"])
             setBossHealth (Bigboss[0]["HP"]+100)
             setBossMaxHealth (Bigboss[0]["HP"]+100)
+            setBossFirstType (Bigboss[pokePlace]["Types"][0])
+            setBossSecondType (Bigboss[pokePlace]["Types"][1])
             setBossAttack (Bigboss[0]["Attack"])
             setBossDefense (Bigboss[0]["Defense"])
             setBossSpecialAttack (Bigboss[0]["Special Attack"])
@@ -134,6 +140,12 @@ function PokeTeam  () {
             console.log("The boss is ready !")
         }
     }
+
+    // const ConvertType = ()=> {
+
+
+
+    // }
 
     const PutFirst = (table, pokemonID) => {
         // setSelectedPokemonId(pokemonID)
@@ -191,7 +203,7 @@ function PokeTeam  () {
                 setGetDeadPoke(true)
 
                 if (deadPoke.lenght === 6){
-                    console.log ("Game over ! All your Pokemon are KO !")
+                    console.log ("Game over ! All your Pokemons are KO !")
                 }
             }
         }else{
@@ -220,7 +232,7 @@ function PokeTeam  () {
                     </div>
                 </div>
                 
-                <p>Attack : {attack}<br/>Defense : {defense}<br/>Special Attack : {specialAttack}<br/>Special Defense : {specialDefense}<br/>Speed : {speed}</p>
+                <p>Types : <br/>{firstType}<br/>{secondType}<br/>Attack : {attack}<br/>Defense : {defense}<br/>Special Attack : {specialAttack}<br/>Special Defense : {specialDefense}<br/>Speed : {speed}</p>
                 
                 <div id='attacks'>
                     <button style={{width:'100px'}} onClick={faster}>{firstMove}</button>
@@ -231,7 +243,7 @@ function PokeTeam  () {
 
                 <button id='generation' onClick={Teambuild}>Add Poke</button>
                 <p >Your Team :
-                    {pokemon.map((poke, index) =><li key={index}>{index+1}.{poke["Name"]}<button className='switch' onClick={PutFirst(pokemon, index)}>Switch Pokemon</button></li>)}
+                    {pokemon.map((poke, index) =><li key={index}>{index+1}.{poke[" Name"]}<button className='switch' onClick={PutFirst(pokemon, index)}>Switch Pokemon</button></li>)}
                 </p>
             </div>
             
@@ -250,7 +262,7 @@ function PokeTeam  () {
                         ></div>
                     </div>
             </div>
-                <p>Attack : {bossAttack}<br/>Defense : {bossDefense}<br/>Special Attack : {bossSpecialAttack}<br/>Special Defense : {bossSpecialDefense}<br/>Speed : {bossSpeed}</p>
+                <p>Types : <br/>{BossFirstType}<br/>{BossSecondType}<br/>Attack : {bossAttack}<br/>Defense : {bossDefense}<br/>Special Attack : {bossSpecialAttack}<br/>Special Defense : {bossSpecialDefense}<br/>Speed : {bossSpeed}</p>
                 <button id='generation' onClick={GenerateBoss}>Generate Boss</button>
             </div>
 
